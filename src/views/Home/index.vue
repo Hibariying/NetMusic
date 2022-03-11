@@ -1,15 +1,17 @@
 <template>
   <div>
       <p class="title">推荐歌单</p>
-      <van-row gutter="6">
+      <van-row gutter="6" justify="center">
         <van-col span="8" v-for="obj in reList" :key="obj.id">
-          <van-image
+          <div class="box">
+            <van-image
             width="100%"
             height="3rem"
             fit="cover"
             :src="obj.picUrl"
           />
-          <p class="song_name">{{obj.name}}</p>
+          <p class="song_name">{{obj.name | specialWord}}</p>
+          </div>
         </van-col>
       </van-row>
       <p class="title">最新音乐</p>
@@ -26,6 +28,16 @@
 import {recommendMusicAPI,newMusicAPI} from "@/api"
 import SongItem from '@/components/SongItem'
 export default {
+  filters:{
+    specialWord:(s)=>{
+      var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\]<>/?~！@#￥……&*（）——{}【】‘；：”“'。，、？%]")
+    var rs = "";
+    for (var i = 0; i < s.length; i++) {
+        rs = rs+s.substr(i, 1).replace(pattern, '');
+    }
+    return rs;
+    }
+  },
   components:{
     SongItem
   },
@@ -69,5 +81,4 @@ export default {
   -webkit-line-clamp: 2; /** 显示的行数 **/
   overflow: hidden; /** 隐藏超出的内容 **/
 }
-
 </style>
